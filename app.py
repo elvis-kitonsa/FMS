@@ -62,7 +62,7 @@ def add_expense():
         try:
             # We use 'description' to match your JavaScript 'expenseData' object
             new_entry = Expense(
-                description=data['description'],
+                title=data['title'],
                 category=data['category'],
                 amount=float(data['amount']),
                 user_id=user.id,
