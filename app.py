@@ -127,7 +127,7 @@ def update_expense_description(expense_id):
             return jsonify({"status": "success", "message": "Description updated"}), 200
         except Exception as e:
             db.session.rollback()
-    return jsonify({"status": "error", "message": str(e)}), 500
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 # --- DATABASE INITIALIZATION ---
 
