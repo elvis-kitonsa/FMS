@@ -16,10 +16,15 @@ class User(UserMixin, db.Model):
     # Account Security & Core Identity Fields
     # These fields are essential for user authentication and identification
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
+
+    # Changed to nullable=True to allow Google users (who don't have passwords) to register
+    password_hash = db.Column(db.String(255), nullable=True)
     full_name = db.Column(db.String(100), nullable=False)
-    phone = db.Column(db.String(20), nullable=False) # For MFA
+    phone = db.Column(db.String(20), unique=True, nullable=False) # For MFA
     dob = db.Column(db.Date, nullable=False) # For age verification
+
+    # NEW: Google OAuth ID
+    google_id = db.Column(db.String(100), unique=True, nullable=True)
     
     # Compliance & Background Information
     # These fields are necessary for Know Your Customer (KYC) compliance
@@ -37,11 +42,6 @@ class User(UserMixin, db.Model):
     terms_agreed = db.Column(db.Boolean, default=False)
     privacy_consent = db.Column(db.Boolean, default=False)
     data_accuracy_declaration = db.Column(db.Boolean, default=False)
-
-    # Biometric/Security tracking
-    # These fields enhance account security through biometric authentication
-    biometric_id = db.Column(db.Text, nullable=True) 
-    is_biometric_enabled = db.Column(db.Boolean, default=False)
     base_currency = db.Column(db.String(3), default='UGX')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     total_balance = db.Column(db.Float, default=0.0)
