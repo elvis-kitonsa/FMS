@@ -31,10 +31,17 @@
 
         <div id="phoneContainer" class="input-group input-group-merge shadow-sm rounded-4 d-none">
           <button class="btn btn-white border-end-0 dropdown-toggle text-dark fw-bold" type="button" data-bs-toggle="dropdown" id="activeCode" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px; font-size: 0.9rem">+256</button>
-          <ul class="dropdown-menu shadow border-0">
-            <li><a class="dropdown-item" href="javascript:void(0)" onclick="setCode('+256')">🇺🇬 +256</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0)" onclick="setCode('+254')">🇰🇪 +254</a></li>
+
+          <ul class="dropdown-menu shadow border-0 p-2" id="countryList" style="max-height: 250px; overflow-y: auto; width: 280px">
+            <div class="px-2 pb-2 border-bottom mb-2">
+              <input type="text" class="form-control form-control-sm rounded-pill" id="countrySearch" placeholder="Search country..." onkeyup="filterCountries()" />
+            </div>
+            <div id="countryItems">
+              <li><a class="dropdown-item" href="javascript:void(0)" onclick="setCode('+256')">🇺🇬 +256 (Uganda)</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0)" onclick="setCode('+254')">🇰🇪 +254 (Kenya)</a></li>
+            </div>
           </ul>
+
           <input type="text" name="phone" class="form-control border-start-0 py-2" placeholder="71234567" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')" id="phoneInput" />
           <input type="hidden" name="country_code" id="country_code_val" value="+256" />
         </div>
@@ -89,5 +96,41 @@
     // This updates the hidden input that goes to the server
     document.getElementById("country_code_val").value = code;
   }
+
+  function filterCountries() {
+    const input = document.getElementById("countrySearch").value.toLowerCase();
+    const items = document.getElementById("countryItems").getElementsByTagName("li");
+
+    for (let i = 0; i < items.length; i++) {
+      const text = items[i].innerText.toLowerCase();
+      items[i].style.display = text.includes(input) ? "" : "none";
+    }
+  }
+
+  // Optional: Run this to populate the list automatically with all countries
+  async function fetchAllCountries() {
+    try {
+      const response = await fetch("https://restcountries.com/v3.1/all?fields=name,idd,flag,cca2");
+      const countries = await response.json();
+      const container = document.getElementById("countryItems");
+
+      // Sort alphabetically
+      countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+      let html = "";
+      countries.forEach((c) => {
+        if (c.idd.root) {
+          const code = c.idd.root + (c.idd.suffixes ? c.idd.suffixes[0] : "");
+          html += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="setCode('${code}')">${c.flag} ${code} (${c.name.common})</a></li>`;
+        }
+      });
+      container.innerHTML = html;
+    } catch (e) {
+      console.log("Error loading countries, keeping defaults.");
+    }
+  }
+
+  // Call this function when the page loads
+  fetchAllCountries();
 </script>
 {% endblock %}
