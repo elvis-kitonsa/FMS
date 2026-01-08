@@ -70,16 +70,6 @@
             </div>
           </div>
 
-          <!-- Residential Area Field -->
-          <div class="mb-2">
-            <label class="form-label small fw-bold text-dark ps-2 mb-1">Residential Address</label>
-            <div class="input-group input-group-merge shadow-sm rounded-pill" style="border: 1px solid #20252c; overflow: hidden">
-              <span class="input-group-text bg-white border-0 ps-3"><i data-lucide="map-pin" size="18" class="text-muted"></i></span>
-              <div style="width: 1px; height: 18px; background-color: #20252c; align-self: center; opacity: 0.4"></div>
-              <input type="text" name="home_address" class="form-control border-0 py-2 shadow-none text-dark fw-medium" placeholder="Street, City" required />
-            </div>
-          </div>
-
           <!-- Password Field -->
           <div class="mb-2">
             <label class="form-label small fw-bold text-dark ps-2 mb-1">Access Key</label>
@@ -88,6 +78,16 @@
               <div style="width: 1px; height: 18px; background-color: #20252c; align-self: center; opacity: 0.4"></div>
               <input type="password" name="password" class="form-control border-0 py-2 shadow-none text-dark fw-medium" placeholder="••••••••" required />
             </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label small fw-bold text-dark ps-2 mb-1">Confirm Access Key</label>
+            <div id="confirmGroup" class="input-group shadow-sm rounded-pill" style="border: 1px solid #20252c; overflow: hidden; transition: all 0.3s ease">
+              <span class="input-group-text bg-white border-0 ps-3"><i data-lucide="shield-check" size="18" class="text-muted"></i></span>
+              <div style="width: 1px; height: 18px; background-color: #20252c; align-self: center; opacity: 0.4"></div>
+              <input type="password" id="confirm_password" class="form-control border-0 py-2 shadow-none text-dark fw-medium" placeholder="••••••••" required />
+            </div>
+            <div id="matchText" class="ps-3 mt-1 small d-none" style="font-size: 0.75rem"></div>
           </div>
         </div>
       </div>
